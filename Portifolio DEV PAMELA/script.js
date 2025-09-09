@@ -192,5 +192,146 @@ document.addEventListener('DOMContentLoaded', () => {
     window.open(`https://wa.me/5511945835660?${query}`, '_blank', 'noopener,noreferrer');
   });
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const contactForm = document.getElementById('contactForm');
+  const successMessage = document.getElementById('success-message');
+
+  contactForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Limpa erros anteriores
+    clearErrors();
+    
+    // Valida o formulário
+    const isValid = validateForm();
+
+    if (isValid) {
+      // Pega os dados do formulário
+      const name = document.getElementById('cf-name').value.trim();
+      const email = document.getElementById('cf-email').value.trim();
+      const subject = document.getElementById('cf-subject').value.trim();
+      const message = document.getElementById('cf-message').value.trim();
+
+      const text = `Olá! Meu nome é ${name} (${email}).\n\n*Assunto:*\n${subject}\n\n*Mensagem:*\n${message}`;
+      const query = new URLSearchParams({ text }).toString();
+      const phone = '5511945835660';
+
+      // Desabilita o botão para evitar múltiplos envios
+      const submitButton = contactForm.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Enviando...';
+
+      // Abre o WhatsApp
+      window.open(`https://wa.me/${phone}?${query}`, '_blank', 'noopener,noreferrer');
+
+      // Mostra a mensagem de sucesso e esconde o formulário
+      setTimeout(() => {
+        contactForm.classList.add('hidden');
+        successMessage.classList.remove('hidden');
+      }, 500); // Um pequeno delay para o usuário ver a mudança no botão
+    }
+  });
+
+  function validateForm() {
+    let valid = true;
+    
+    // Valida nome
+    const nameInput = document.getElementById('cf-name');
+    if (nameInput.value.trim() === '') {
+      showError(nameInput, 'O campo nome é obrigatório.');
+      valid = false;
+    }
+    
+    // Valida email
+    const emailInput = document.getElementById('cf-email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailInput.value.trim() === '') {
+      showError(emailInput, 'O campo email é obrigatório.');
+      valid = false;
+    } else if (!emailRegex.test(emailInput.value.trim())) {
+      showError(emailInput, 'Por favor, insira um email válido.');
+      valid = false;
+    }
+
+    // Valida assunto
+    const subjectInput = document.getElementById('cf-subject');
+    if (subjectInput.value.trim() === '') {
+      showError(subjectInput, 'O campo assunto é obrigatório.');
+      valid = false;
+    }
+    
+    // Valida mensagem
+    const messageInput = document.getElementById('cf-message');
+    if (messageInput.value.trim() === '') {
+      showError(messageInput, 'O campo mensagem é obrigatório.');
+      valid = false;
+    }
+
+    return valid;
+  }
+  
+  function showError(inputElement, message) {
+    const field = inputElement.closest('.field');
+    const errorSpan = field.querySelector('.error-message');
+    errorSpan.textContent = message;
+    inputElement.style.borderColor = 'var(--error-color)'; // Destaca a borda
+  }
+
+  function clearErrors() {
+    const errorMessages = document.querySelectorAll('.error-message');
+    errorMessages.forEach(span => span.textContent = '');
+    
+    const inputs = document.querySelectorAll('.input');
+    inputs.forEach(input => input.style.borderColor = 'var(--border-color)');
+  }
+// Adicione ou substitua esta lógica no seu script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // 1. Seleciona TODOS os botões com a classe .burger
+  const burgerButtons = document.querySelectorAll('.burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const body = document.body;
+
+  // Se não encontrar os elementos, não faz nada
+  if (burgerButtons.length === 0 || !mobileMenu) {
+    return;
+  }
+
+  // 2. Função para abrir/fechar o menu
+  const toggleMenu = () => {
+    // Pega o estado atual (true se está aberto, false se fechado)
+    const isExpanded = mobileMenu.getAttribute('aria-hidden') === 'false';
+
+    // Inverte o estado
+    mobileMenu.setAttribute('aria-hidden', isExpanded);
+    body.classList.toggle('menu-is-open'); // Classe no body para travar o scroll
+
+    // Atualiza o estado de TODOS os botões
+    burgerButtons.forEach(button => {
+      button.setAttribute('aria-expanded', !isExpanded);
+      button.classList.toggle('is-active'); // Classe para animar o "X"
+    });
+  };
+
+  // 3. Adiciona o evento de clique a CADA botão
+  burgerButtons.forEach(button => {
+    button.addEventListener('click', toggleMenu);
+  });
+  
+  // --- MELHORIA DE UX (BÔNUS) ---
+  // 4. Fecha o menu ao clicar em um link dele
+  const menuLinks = mobileMenu.querySelectorAll('a');
+  menuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // Verifica se o menu está aberto antes de tentar fechar
+      if (mobileMenu.getAttribute('aria-hidden') === 'false') {
+        toggleMenu();
+      }
+    });
+  });
 
 });
+});
+});
+// Removido: HTML do formulário e script duplicado.
