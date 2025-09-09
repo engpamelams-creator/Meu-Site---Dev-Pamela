@@ -1,3 +1,4 @@
+
 /* Reset & Base */
 * {
   margin: 0;
@@ -1271,3 +1272,79 @@ footer {
   .burger { display: flex; }
 }
 
+
+/* --- Estilos para o Formulário com Floating Labels --- */
+
+/* 1. Contêiner de cada campo (label + input) */
+.field {
+  position: relative; /* Essencial para o posicionamento absoluto do label */
+  margin-bottom: 1.5rem; /* Espaçamento entre os campos */
+}
+
+/* 2. Estilo dos inputs e textarea */
+.input {
+  width: 100%;
+  padding: 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: transparent; /* Fundo transparente para o label aparecer */
+  transition: border-color 0.2s;
+}
+
+/* 3. Estilo do label (estado inicial, "dentro" do campo) */
+.field label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 1rem;
+  pointer-events: none; /* Permite clicar "através" do label no input */
+  transition: all 0.2s ease-out;
+}
+
+/* 4. ONDE A MÁGICA ACONTECE: O estado "flutuando" */
+
+/* Move o label para cima quando o input está em foco OU quando não está vazio */
+.input:focus + label,
+.input:not(:placeholder-shown) + label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: #007BFF; /* Cor de destaque (opcional) */
+  background-color: #fff; /* Cor de fundo da sua página, para criar o efeito de "corte" na borda */
+  padding: 0 5px;
+}
+
+/* Opcional: Destaca a borda do input quando em foco */
+.input:focus {
+  outline: none;
+  border-color: #007BFF;
+}
+
+/* Trava o scroll da página quando o menu está aberto */
+body.menu-is-open {
+  overflow: hidden;
+}
+
+/* Animação do ícone hambúrguer para um "X" quando ativo */
+.burger.is-active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.burger.is-active span:nth-child(2) {
+  opacity: 0;
+}
+.burger.is-active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Estilos básicos para o menu (exemplo) */
+.mobile-menu {
+  /* Escondido por padrão */
+  display: none; 
+}
+.mobile-menu[aria-hidden="false"] {
+  /* Visível quando aberto */
+  display: block; 
+}
