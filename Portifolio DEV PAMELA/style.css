@@ -515,6 +515,8 @@ header .social-links {
   line-height: 1.6;
 }
 
+
+
 /* Sobre */
 .about {
   display: grid;
@@ -1347,4 +1349,265 @@ body.menu-is-open {
 .mobile-menu[aria-hidden="false"] {
   /* Visível quando aberto */
   display: block; 
+}
+
+/* --- Estilos para a Grade do Portfólio --- */
+
+.portfolio-grid {
+  display: grid; /* Ativa o layout em grade */
+  
+  /* A linha mais importante: cria colunas responsivas automaticamente */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  
+  gap: 2rem; /* Cria um espaçamento consistente entre todos os itens */
+}
+
+/* --- Melhorias Visuais (Opcional, mas recomendado) --- */
+
+.portfolio-item {
+  background-color: #fff; /* Adiciona um fundo, caso a imagem falhe */
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow: hidden; /* Garante que a imagem não "vaze" para fora das bordas arredondadas */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-item:hover {
+  transform: translateY(-5px); /* Efeito de elevação ao passar o mouse */
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.portfolio-image {
+  position: relative; /* Necessário para o overlay funcionar bem */
+  height: 250px; /* Define uma altura fixa para todos os cards */
+}
+
+.portfolio-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Faz a imagem cobrir todo o espaço sem distorcer */
+  transition: transform 0.4s ease;
+}
+
+.portfolio-item:hover .portfolio-image img {
+  transform: scale(1.05); /* Efeito de zoom sutil na imagem */
+}
+
+.portfolio-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.1)); /* Deixa o texto mais legível */
+  
+  /* Posiciona o conteúdo do overlay */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Alinha na parte de baixo */
+  padding: 1.5rem;
+  color: #fff;
+  opacity: 1; /* Mantém o overlay sempre visível */
+  transition: background 0.3s ease;
+}
+
+.portfolio-overlay h4 {
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-overlay p {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.portfolio-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  background-color: var(--primary-color); /* Use a cor primária do seu site */
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  align-self: flex-start; /* Alinha o botão à esquerda */
+  transition: background-color 0.2s;
+}
+
+.portfolio-link:hover {
+  background-color: var(--primary-dark-color); /* Use uma variação mais escura da cor primária */
+}
+
+/* --- Estilo Melhorado para o Botão "Ver Projeto" --- */
+
+.portfolio-link {
+  /* Layout e Alinhamento */
+  display: inline-flex; /* Alinha o texto e o ícone na mesma linha */
+  align-items: center;  /* Centraliza verticalmente o texto e o ícone */
+  gap: 0.5rem; /* Espaço entre o texto e o ícone */
+
+  /* Aparência */
+  background-color: var(--primary-color, #007BFF); /* Cor de fundo - usa a variável do seu site ou um azul padrão */
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600; /* Texto mais forte */
+  padding: 0.75rem 1.5rem; /* Mais espaçamento interno */
+  border-radius: 50px; /* Bordas totalmente arredondadas (formato de pílula) */
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2); /* Sombra sutil da mesma cor */
+  
+  /* Transições para efeitos suaves */
+  transition: all 0.3s ease;
+}
+
+/* Estilo do ícone SVG */
+.portfolio-link svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+/* --- EFEITOS DE INTERAÇÃO (HOVER) --- */
+.portfolio-link:hover {
+  background-color: var(--primary-dark-color, #0056b3); /* Cor mais escura ao passar o mouse */
+  transform: translateY(-3px); /* Efeito de "levantar" o botão */
+  box-shadow: 0 7px 20px rgba(0, 123, 255, 0.3); /* Sombra mais pronunciada */
+}
+
+/* Animação do ícone ao passar o mouse */
+.portfolio-link:hover svg {
+  transform: translateX(4px); /* Move a seta para a direita */
+}
+
+/* --- Estilo "Fantasma" para o Botão "Ver Projeto" --- */
+
+.portfolio-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  /* Aparência de "Fantasma" */
+  background-color: transparent; /* Fundo transparente */
+  color: #fff;
+  border: 2px solid #fff; /* Borda branca */
+  
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  
+  transition: all 0.3s ease;
+}
+
+.portfolio-link svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+/* --- EFEITOS DE INTERAÇÃO (HOVER) --- */
+.portfolio-link:hover {
+  background-color: #fff; /* Fundo fica branco */
+  color: #111; /* Texto fica escuro */
+  transform: translateY(-3px);
+}
+
+.portfolio-link:hover svg {
+  transform: translateX(4px);
+}
+
+
+
+/* --- LAYOUT RESPONSIVO DAS HABILIDADES --- */
+
+/* --- LAYOUT EM GRID (MANTENHA ESTE) --- */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 40px; /* Aumentei o espaço para o brilho não sobrepor */
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+
+/* --- NOVOS ESTILOS PARA O CARTÃO TECNOLÓGICO --- */
+.skill-card {
+  position: relative; /* Essencial para o posicionamento da borda animada */
+  background-color: #1a1a2e; /* Um azul bem escuro, quase preto */
+  padding: 35px;
+  border-radius: 15px; /* Bordas um pouco mais arredondadas */
+  overflow: hidden; /* Garante que nada vaze das bordas arredondadas */
+  transition: transform 0.3s ease;
+  z-index: 1; /* Garante que o card fique acima da borda */
+  border: 2px solid transparent; /* Borda transparente que será 'preenchida' pelo gradiente */
+  background-clip: padding-box; /* Garante que o background não passe por baixo da borda */
+}
+
+/* A MÁGICA DA BORDA ANIMADA */
+.skill-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -1;
+  margin: -2px; /* Faz o pseudo-elemento ser um pouco maior que o card */
+  border-radius: inherit; /* Herda o mesmo border-radius do card */
+  
+  /* Gradiente cônico que vai girar */
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #666060 0%,
+    #797272 50%,
+    #666060 100%
+  );
+  
+  /* Animação de rotação */
+  animation: rotate 4s linear infinite;
+}
+
+/* Animação que gira o gradiente */
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* EFEITO DE BRILHO (GLOW) AO PASSAR O MOUSE */
+.skill-card:hover {
+  transform: translateY(-10px); /* Eleva o card */
+}
+
+.skill-card:hover::before {
+  /* Ao passar o mouse, desfocamos a borda animada para criar o brilho */
+  filter: blur(15px);
+  opacity: 0.8;
+}
+
+
+/* TÍTULO COM EFEITO NEON */
+.skill-card h3 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #050505; /* Cor base mais clara */
+  font-size: 1.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 2px solid rgba(172, 74, 17, 0.3);
+  padding-bottom: 12px;
+  text-align: center;
+  
+  /* Sombra de texto para criar o efeito Neon */
+  text-shadow:
+    0 0 5px rgba(5, 2, 0, 0.8),
+    0 0 10px rgba(143, 117, 106, 0.8),
+    0 0 15px rgba(221, 210, 204, 0.8);
+}
+
+/* MELHORIA NAS BARRAS DE HABILIDADE */
+.fill {
+  /* ... mantenha os outros estilos do .fill ... */
+  background: linear-gradient(90deg, #ff6b35, #ff6b35); /* Gradiente que combina com a nova paleta */
+  box-shadow: 0 0 8px rgba(247, 245, 245, 0.7); /* Brilho que combina com o gradiente */
+}
+
+.bar label span {
+  /* ... mantenha os outros estilos do span ... */
+  color: #f8cdda; /* Cor da porcentagem combinando com o gradiente */
 }
