@@ -515,6 +515,8 @@ header .social-links {
   line-height: 1.6;
 }
 
+
+
 /* Sobre */
 .about {
   display: grid;
@@ -1508,4 +1510,104 @@ body.menu-is-open {
 
 .portfolio-link:hover svg {
   transform: translateX(4px);
+}
+
+
+
+/* --- LAYOUT RESPONSIVO DAS HABILIDADES --- */
+
+/* --- LAYOUT EM GRID (MANTENHA ESTE) --- */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 40px; /* Aumentei o espaço para o brilho não sobrepor */
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+
+/* --- NOVOS ESTILOS PARA O CARTÃO TECNOLÓGICO --- */
+.skill-card {
+  position: relative; /* Essencial para o posicionamento da borda animada */
+  background-color: #1a1a2e; /* Um azul bem escuro, quase preto */
+  padding: 35px;
+  border-radius: 15px; /* Bordas um pouco mais arredondadas */
+  overflow: hidden; /* Garante que nada vaze das bordas arredondadas */
+  transition: transform 0.3s ease;
+  z-index: 1; /* Garante que o card fique acima da borda */
+  border: 2px solid transparent; /* Borda transparente que será 'preenchida' pelo gradiente */
+  background-clip: padding-box; /* Garante que o background não passe por baixo da borda */
+}
+
+/* A MÁGICA DA BORDA ANIMADA */
+.skill-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -1;
+  margin: -2px; /* Faz o pseudo-elemento ser um pouco maior que o card */
+  border-radius: inherit; /* Herda o mesmo border-radius do card */
+  
+  /* Gradiente cônico que vai girar */
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #666060 0%,
+    #797272 50%,
+    #666060 100%
+  );
+  
+  /* Animação de rotação */
+  animation: rotate 4s linear infinite;
+}
+
+/* Animação que gira o gradiente */
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* EFEITO DE BRILHO (GLOW) AO PASSAR O MOUSE */
+.skill-card:hover {
+  transform: translateY(-10px); /* Eleva o card */
+}
+
+.skill-card:hover::before {
+  /* Ao passar o mouse, desfocamos a borda animada para criar o brilho */
+  filter: blur(15px);
+  opacity: 0.8;
+}
+
+
+/* TÍTULO COM EFEITO NEON */
+.skill-card h3 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #050505; /* Cor base mais clara */
+  font-size: 1.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 2px solid rgba(172, 74, 17, 0.3);
+  padding-bottom: 12px;
+  text-align: center;
+  
+  /* Sombra de texto para criar o efeito Neon */
+  text-shadow:
+    0 0 5px rgba(5, 2, 0, 0.8),
+    0 0 10px rgba(143, 117, 106, 0.8),
+    0 0 15px rgba(221, 210, 204, 0.8);
+}
+
+/* MELHORIA NAS BARRAS DE HABILIDADE */
+.fill {
+  /* ... mantenha os outros estilos do .fill ... */
+  background: linear-gradient(90deg, #ff6b35, #ff6b35); /* Gradiente que combina com a nova paleta */
+  box-shadow: 0 0 8px rgba(247, 245, 245, 0.7); /* Brilho que combina com o gradiente */
+}
+
+.bar label span {
+  /* ... mantenha os outros estilos do span ... */
+  color: #f8cdda; /* Cor da porcentagem combinando com o gradiente */
 }
