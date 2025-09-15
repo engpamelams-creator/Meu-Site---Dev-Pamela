@@ -317,80 +317,98 @@
 </section>
 
     <!-- PORTFÓLIO -->
-   <section id="portfolio" class="sec container">
+<section id="portfolio" class="sec container">
   <h2 class="reveal">Projetos em Destaque</h2>
   <p class="lead reveal">Uma vitrine do meu trabalho recente e soluções criativas.</p>
-  
+
   <div class="portfolio-grid">
-    
-    <div class="portfolio-item reveal">
+    <!-- 1 -->
+    <article class="portfolio-item reveal">
       <div class="portfolio-image">
-        <img src="port/pet.png" alt="Projeto Pet Boutique" loading="lazy" />
+        <img src="port/pet.png" alt="Projeto Pet Boutique" loading="lazy">
         <div class="portfolio-overlay">
           <h4>Pet Botique</h4>
           <p>Landing Page &amp; Desenvolvimento</p>
           <a href="https://pet-boutique-seven.vercel.app/" class="portfolio-link" target="_blank" rel="noopener noreferrer">Ver projeto</a>
         </div>
       </div>
-    </div>
-    
-    <div class="portfolio-item reveal">
+    </article>
+
+    <!-- 2 -->
+    <article class="portfolio-item reveal">
       <div class="portfolio-image">
-        <img src="port/cafe.png" alt="Projeto Cafe Mundo Geek" loading="lazy" />
+        <img src="port/cafe.png" alt="Projeto Cafe Mundo Geek" loading="lazy">
         <div class="portfolio-overlay">
           <h4>Cafe Mundo Geek</h4>
           <p>Universo Geek do Café</p>
           <a href="https://cafeteria-mundo-geek.vercel.app/" class="portfolio-link" target="_blank" rel="noopener noreferrer">Ver projeto</a>
         </div>
       </div>
-    </div>
-    
-    <div class="portfolio-item reveal">
+    </article>
+
+    <!-- 3 -->
+    <article class="portfolio-item reveal">
       <div class="portfolio-image">
-        <img src="port/esmal.png" alt="Projeto Esmalteria Little Kiss" loading="lazy" />
+        <img src="port/esmal.png" alt="Projeto Esmalteria Little Kiss" loading="lazy">
         <div class="portfolio-overlay">
           <h4>Esmalteria Little Kiss</h4>
           <p>Beleza para suas unhas</p>
           <a href="https://esmalteria-little-kiss-edbt.vercel.app/" class="portfolio-link" target="_blank" rel="noopener noreferrer">Ver projeto</a>
         </div>
       </div>
-    </div>
-    
-    <div class="portfolio-item reveal">
+    </article>
+
+    <!-- 4 -->
+    <article class="portfolio-item reveal">
       <div class="portfolio-image">
-        <img src="port/santos.png" alt="Projeto Imobiliaria Santos" loading="lazy" />
+        <img src="port/santos.png" alt="Projeto Imobiliaria Santos" loading="lazy">
         <div class="portfolio-overlay">
           <h4>Imobiliaria Santos</h4>
           <p>Encontre a casa dos seus &amp; SONHOS</p>
           <a href="https://imobili-ria-santos-lyart.vercel.app/" class="portfolio-link" target="_blank" rel="noopener noreferrer">Ver projeto</a>
         </div>
       </div>
-    </div>
-    
-    <div class="portfolio-item reveal">
+    </article>
+
+    <!-- 5 -->
+    <article class="portfolio-item reveal">
       <div class="portfolio-image">
-        <img src="port/saulo.png" alt="Projeto Barbearia do Saulo" loading="lazy" />
+        <img src="port/saulo.png" alt="Projeto Barbearia do Saulo" loading="lazy">
         <div class="portfolio-overlay">
           <h4>Barbearia do Saulo</h4>
           <p>Tradição e qualidade em cada corte</p>
           <a href="https://barbariasaulo.netlify.app/" class="portfolio-link" target="_blank" rel="noopener noreferrer">Ver projeto</a>
         </div>
       </div>
-    </div>
+    </article>
 
-    
-<div class="portfolio-item reveal">
+    <!-- 6 -->
+    <article class="portfolio-item reveal">
       <div class="portfolio-image">
-        <img src="port/HDS.png" alt="Projeto Barbearia do Saulo" loading="lazy" />
+        <img src="img/12345.jpg" alt="HDS - Eletricista & Automação" loading="lazy">
         <div class="portfolio-overlay">
           <h4>HDS - ELETRICISTA & AUTOMAÇÃO</h4>
           <p>Soluções completas em instalações elétricas, automação residencial e industrial.</p>
           <a href="https://hdseletrica.netlify.app/" class="portfolio-link" target="_blank" rel="noopener noreferrer">Ver projeto</a>
         </div>
       </div>
-    </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="portfolio-item reveal">
+      <div class="portfolio-image">
+        <img src="img/11.png" alt="Advocacia Lima & Menegasso" loading="lazy">
+        <div class="portfolio-overlay">
+          <h4>Advocacia Lima &amp; Menegasso</h4>
+          <p>Serviços jurídicos com atendimento personalizado e foco em resultados.</p>
+          <a href="https://velvety-hummingbird-c54e2f.netlify.app/" class="portfolio-link" target="_blank" rel="noopener noreferrer">Ver projeto</a>
+        </div>
+      </div>
+    </article>
   </div>
- </section>
+</section>
+
+
 
 <!-- foder-->
 
@@ -491,5 +509,21 @@ document.getElementById('contactForm').addEventListener('submit', function (e) {
 </button>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js"></script>
+
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold: 0.12});
+  els.forEach(el=>io.observe(el));
+</script>
+<style>
+  .reveal{opacity:0; transform: translateY(14px); transition: .5s ease}
+  .reveal.in{opacity:1; transform:none}
+</style>
+
 </body>
 </html>
