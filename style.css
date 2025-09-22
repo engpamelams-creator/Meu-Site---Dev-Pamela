@@ -632,12 +632,15 @@ header .social-links {
 
 /* Portfólio */
 .portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem; /* Aumenta o espaçamento entre os cards */
+  display: grid; /* Define o contêiner como uma grade */
+  grid-template-columns: repeat(3, 1fr); /* Cria 3 colunas de largura igual */
+  gap: 1rem; /* Define o espaçamento entre as células da grade */
+  justify-content: center; /* Centraliza os itens horizontalmente */
 }
 
 .portfolio-item {
+  flex: 1 1 300px; /* Permite que os itens cresçam, encolham, mas mantenham um tamanho base de 300px */
+  min-width: 200px; /* Garante que os itens não fiquem esmagados em telas menores */
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
@@ -666,9 +669,16 @@ header .social-links {
 
 .portfolio-image img {
   width: 100%;
-  height: 100%; /* Ajustado para ocupar a altura do seu contêiner pai */
-  object-fit: cover;
+  max-width: 400px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
   transition: var(--transition);
+}
+
+.portfolio-image img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-hover);
 }
 
 .portfolio-overlay {
@@ -1684,8 +1694,147 @@ body.menu-is-open {
   align-self:flex-start;
   background: rgba(255,255,255,.15);
   border:1px solid rgba(255,255,255,.4);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color:#fff; padding:.55rem 1rem; border-radius: 999px;
   transition: background .2s ease, transform .2s ease;
 }
 .portfolio-link:hover{ background: rgba(255,255,255,.25); transform: translateY(-2px); }
+
+/* Fonte via Google Fonts — coloque no <head> se ainda não tiver */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Lora:wght@400;700&display=swap');
+
+/* Galeria de Fotos */
+.galeria-section {
+  padding: 4rem 1rem;
+  text-align: center;
+  font-family: 'Lora', serif;
+  color: var(--text-primary);
+}
+
+.galeria-section h2.reveal {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.25rem, 4vw + 1rem, 3rem);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.galeria-section .lead {
+  font-size: clamp(1rem, 2vw + 0.5rem, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.5;
+}
+
+/* Flexbox para galeria */
+.galeria-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: stretch;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+/* Itens da galeria */
+.figura-item {
+  position: relative;
+  flex: 1 1 300px;
+  max-width: 340px;
+  min-width: 260px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform .18s, box-shadow .18s;
+}
+.figura-item:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.22);
+}
+
+.figura-item img,
+.figura-item .galeria-video {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: #181818;
+  border-radius: 0;
+}
+
+.video-item .galeria-video {
+  aspect-ratio: 16/9;
+  background: #000;
+  min-height: 180px;
+}
+
+.legenda {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.60);
+  color: #fff;
+  padding: .7rem 1rem .5rem 1rem;
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: .2px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  z-index: 2;
+  pointer-events: none;
+  transition: background .2s;
+}
+
+.figura-item:hover .legenda {
+  background: rgba(0,0,0,0.78);
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  .galeria-flex {
+    gap: 1.2rem;
+    max-width: 98vw;
+  }
+  .figura-item {
+    max-width: 48vw;
+    min-width: 180px;
+  }
+}
+@media (max-width: 768px) {
+  .galeria-flex {
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+  }
+  .figura-item {
+    width: 100%;
+    max-width: 98vw;
+    min-width: 0;
+  }
+  .figura-item img,
+  .figura-item .galeria-video {
+    height: 180px;
+  }
+}
+@media (max-width: 480px) {
+  .galeria-section {
+    padding: 2rem 0.5rem;
+  }
+  .figura-item img,
+  .figura-item .galeria-video {
+    height: 140px;
+  }
+  .legenda {
+    font-size: 0.95rem;
+    padding: .5rem .5rem .4rem .5rem;
+  }
+}

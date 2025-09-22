@@ -335,3 +335,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 });
 // Removido: HTML do formulário e script duplicado.
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.video-item .galeria-video').forEach(video => {
+    // Desktop: hover
+    video.closest('.video-item').addEventListener('mouseenter', () => {
+      video.currentTime = 0;
+      video.play().catch(()=>{ /* ignorar bloqueios */ });
+    });
+    video.closest('.video-item').addEventListener('mouseleave', () => {
+      video.pause(); video.currentTime = 0;
+    });
+    // Mobile: toque alterna play/pause
+    video.addEventListener('click', () => {
+      if (video.paused) video.play(); else video.pause();
+    });
+  });
+});

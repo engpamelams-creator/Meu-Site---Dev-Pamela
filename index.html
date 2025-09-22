@@ -8,7 +8,7 @@
   <meta property="og:title" content="Dev Pamela M|Full Stack Developer"/>
   <meta property="og:description" content="Projetos, skills e contato. Design e desenvolvimento de alta qualidade."/>
   <meta property="og:type" content="website"/>
-  <meta property="og:image" content="/img/og-image.jpg"/>
+  <meta property="og:image" content="img/panda.jpg"/>
   <meta name="theme-color" content="#1a1a1a">
   <meta name="color-scheme" content="dark light">
   <meta name="msapplication-navbutton-color" content="#1a1a1a">
@@ -22,6 +22,11 @@
 <body>
   <!-- Barra de progresso fixa no topo indicando o quanto da página já foi percorrido -->
   <div class="progress" id="progress"></div>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+
   
   <!-- Cabeçalho com navegação principal e botão de ação -->
   <header>
@@ -46,17 +51,7 @@
 
     </div>
     
-    <!-- Menu Mobile -->
-    <div class="mobile-menu" id="mobileMenu">
-      <nav class="mobile-nav">
-        <a href="#home">Home</a>
-        <a href="#services">Serviços</a>
-        <a href="#sobre">Sobre mim</a>
-        <a href="#portfolio">Portfólio</a>
-        <a href="#contato">Contato</a>
-        <a href="#contato" class="hire-btn">Contrate‑me</a>
-      </nav>
-    </div>
+    
   </header>
 
   <main id="home">
@@ -105,7 +100,7 @@
   <a href="https://wa.me/5511945835660" class="btn primary" target="_blank" rel="noopener noreferrer">
     Contrate-me
   </a>
-            <a href="https://drive.google.com/file/d/1eSk_SkOodOoC2gBJKrMtNzc5T2GtX4hi/view?usp=sharing"
+            <a href="https://drive.google.com/file/d/15cayEeB30bRNyzNDezOm5NsQF6eGzRca/view?usp=sharing"
    class="btn secondary"
    target="_blank"
    rel="noopener noreferrer">
@@ -118,7 +113,7 @@
 
         <div class="hero-image">
           <!-- Imagem do herói. Pode ser substituída por outra foto profissional -->
-          <img src="img/foto_profi-.png" alt="Foto profissional" loading="lazy" />
+          <img src="img/foto_profi-.png"alt="Foto profissional" loading="lazy" />
         </div>
       </div>
 
@@ -408,6 +403,47 @@
   </div>
 </section>
 
+
+
+<!-- Galeria lado a lado -->
+<section class="galeria-section container">
+  <h2 class="reveal">Outros Projetos</h2>
+  <p class="lead reveal">Veja uma seleção dos meus trabalhos mais recentes e bem produzidos.</p>
+
+  <div class="galeria-flex">
+    <!-- item com imagem -->
+    <div class="figura-item reveal">
+      <img src="img/ere.jpg" alt="Festa de ERÊ" loading="lazy" decoding="async">
+      <div class="legenda"><p>Cachoeira</p></div>
+    </div>
+
+    <!-- item com vídeo -->
+    <div class="figura-item reveal video-item">
+      <video
+        class="galeria-video"
+        controls
+        muted
+        playsinline
+        webkit-playsinline
+        preload="metadata"
+        poster="img/videoere-poster.jpg"
+        onerror="document.getElementById('fallback-video-msg').style.display='block'">
+        <source src="img/videoere.mp4" type="video/mp4">
+        <!-- Fallback para navegadores sem suporte -->
+        Seu navegador não suporta vídeo HTML5.
+      </video>
+      <div id="fallback-video-msg">
+      
+      </div>
+      <div class="legenda"><p></p></div>
+    </div>
+  </div>
+</section>
+ 
+  
+    <!-- mais figuras -->
+  </div>
+</section>
 
 
 <!-- foder-->
