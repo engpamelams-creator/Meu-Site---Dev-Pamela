@@ -281,18 +281,44 @@ header .social-links {
 }
 
 .hero-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
   width: 100%;
+  text-align: center;
 }
 
 .hero-content {
-  animation: slideInLeft 1s ease-out;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .hero-inner {
+    padding: 0 1rem;
+  }
+  .hero-content {
+    max-width: 98vw;
+    padding: 0 1rem;
+  }
+  .hero-stats {
+    gap: 1rem;
+  }
 }
 
 .hero-greeting {
@@ -325,34 +351,46 @@ header .social-links {
 
 .social-links {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
 }
 
 .social-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border, #eee);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary);
-  transition: var(--transition);
+  color: var(--text-secondary, #555);
+  transition: 0.2s;
   text-decoration: none;
+  background: #fff;
 }
 
 .social-btn:hover {
-  color: var(--primary);
-  border-color: var(--primary);
-  transform: translateY(-2px);
+  color: var(--primary, #ff6b35);
+  border-color: var(--primary, #ff6b35);
+  background: #f9f9f9;
+  transform: scale(1.08);
 }
 
-.social-btn svg {
-  width: 20px;
-  height: 20px;
+@media (max-width: 600px) {
+  .hero-content {
+    max-width: 98vw;
+    padding: 0 1rem;
+  }
+  .social-links {
+    gap: 0.6rem;
+  }
+  .social-btn {
+    width: 38px;
+    height: 38px;
+  }
 }
-
 .hero-buttons {
   display: flex;
   gap: 1rem;
@@ -463,6 +501,17 @@ header .social-links {
   line-height: 1.7;
 }
 
+/* Espaçamento entre as sections */
+section.sec {
+  margin-bottom: 4rem;
+}
+
+@media (max-width: 600px) {
+  section.sec {
+    margin-bottom: 2.2rem;
+  }
+}
+
 /* Serviços */
 .services-grid {
   display: grid;
@@ -554,6 +603,50 @@ header .social-links {
 
 .about-card strong {
   color: var(--text-primary);
+}
+
+/* Fundo decorativo para a seção SOBRE */
+#sobre {
+  background: 
+  #0000005e;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(30,40,80,0.13);
+  padding: 4rem 2rem 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+#sobre::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #ff6b35 0%, transparent 70%);
+  opacity: 0.14;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#sobre::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, #ffb86b 0%, transparent 70%);
+  opacity: 0.09;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#sobre h2,
+#sobre .lead,
+.about {
+  position: relative;
+  z-index: 2;
 }
 
 /* Habilidades */
@@ -1836,5 +1929,237 @@ body.menu-is-open {
   .legenda {
     font-size: 0.95rem;
     padding: .5rem .5rem .4rem .5rem;
+  }
+}
+
+/* Fundo decorativo para a seção SERVICES */
+#services {
+  background: #00000086;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 5rem 2rem 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+#services::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, #ff6b35 0%, transparent 70%);
+  opacity: 0.16;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#services::after {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  right: -80px;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, #ffb86b 0%, transparent 70%);
+  opacity: 0.10;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#services h2,
+#services .lead,
+.services-grid {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fundo decorativo para a seção SKILLS */
+#skills {
+  background: #0000006b;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 5rem 2rem 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+#skills::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, #ff6b35 0%, transparent 70%);
+  opacity: 0.16;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#skills::after {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  right: -80px;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, #ffb86b 0%, transparent 70%);
+  opacity: 0.10;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#skills h2,
+#skills .lead,
+.skills-grid {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fundo decorativo para a seção PORTFÓLIO */
+#portfolio {
+  background: #0000057e;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 5rem 2rem 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+#portfolio::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, #ff6b35 0%, transparent 70%);
+  opacity: 0.13;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#portfolio::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, #ffb86b 0%, transparent 70%);
+  opacity: 0.09;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#portfolio h2,
+#portfolio .lead,
+.portfolio-grid {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fundo decorativo para a seção Galeria */
+.galeria-section {
+  background: #00020863;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(30,40,80,0.13);
+  padding: 4rem 2rem 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.galeria-section::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, #ff6b35 0%, transparent 70%);
+  opacity: 0.13;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.galeria-section::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, #ffb86b 0%, transparent 70%);
+  opacity: 0.09;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.galeria-section h2,
+.galeria-section .lead,
+.galeria-flex {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fundo decorativo para a seção CONTATO */
+#contato {
+  background: #00000063;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(30,40,80,0.13);
+  padding: 4rem 2rem 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+#contato::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, #ff6b35 0%, transparent 70%);
+  opacity: 0.13;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#contato::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, #ffb86b 0%, transparent 70%);
+  opacity: 0.09;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#contato h2,
+#contato .lead,
+#contato form {
+  position: relative;
+  z-index: 2;
+}
+
+/* Espaço entre Galeria e Contato */
+.galeria-section {
+  margin-bottom: 4rem;
+}
+
+#contato {
+  margin-top: 4rem;
+}
+
+@media (max-width: 600px) {
+  .galeria-section,
+  #contato {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
   }
 }
