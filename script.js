@@ -1,148 +1,82 @@
-/*
+/* ===========================================
  * Script principal do portfólio unificado
- *
- * Este arquivo lida com as interações do usuário, incluindo:
- *  - Exibir/ocultar o menu mobile ao clicar no botão burguer;
- *  - Atualizar a barra de progresso com base no scroll da página;
- *  - Revelar elementos com a classe `.reveal` conforme entram na viewport;
- *  - Alterar o estilo do cabeçalho quando o usuário rola a página;
- *  - Inserir o ano atual no rodapé;
- *  - Processar o envio do formulário de contato (apenas demonstração).
- */
+ * - Menu mobile (abrir/fechar/ESC/links)
+ * - Barra de progresso do scroll (rAF + passive)
+ * - Reveal com IntersectionObserver
+ * - Cabeçalho dinâmico (scrolled)
+ * - Ano no rodapé
+ * - Rolagem suave para âncoras (com offset do header)
+ * - Formulário (validação nativa + WhatsApp oficial)
+ * - Galeria de vídeo (hover em pointer fine + toque, pausa offscreen)
+ * - Respeita prefers-reduced-motion
+ * =========================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Controle do menu mobile
-  const burger = document.getElementById('burger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  if (burger && mobileMenu) {
-    burger.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
-    });
-    // Fechar o menu quando um link for clicado
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
+  // Helpers
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const on  = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
+  const off = (el, ev, fn, opts) => el && el.removeEventListener(ev, fn, opts);
+
+  const docEl  = document.documentElement;
+  const body   = document.body;
+  const header = $('header');
+
+  // ===== Reduced motion =====
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const isReduced = () => prefersReduced.matches; // atualiza dinamicamente
+  on(prefersReduced, 'change', () => { /* nada a fazer: callbacks já checam isReduced() */ });
+
+  // ===== MENU MOBILE =====
+  const burgerButtons = $$('.burger');
+  const mobileMenu    = $('#mobileMenu');
+
+  if (burgerButtons.length && mobileMenu) {
+    const toggleMenu = (force) => {
+      const next = force ?? !mobileMenu.classList.contains('open');
+      mobileMenu.classList.toggle('open', next);
+      mobileMenu.setAttribute('aria-hidden', next ? 'false' : 'true');
+      body.classList.toggle('menu-is-open', next);
+      burgerButtons.forEach(btn => {
+        btn.setAttribute('aria-expanded', next ? 'true' : 'false');
+        btn.classList.toggle('is-active', next);
       });
+    };
+
+    burgerButtons.forEach(btn => on(btn, 'click', () => toggleMenu()));
+    // Fecha ao clicar em um link
+    $$('#mobileMenu a').forEach(a => on(a, 'click', () => toggleMenu(false)));
+    // ESC
+    on(document, 'keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) toggleMenu(false);
     });
   }
 
-  // Atualização da barra de progresso com base no scroll
-  const progressBar = document.getElementById('progress');
+  // ===== BARRA DE PROGRESSO =====
+  const progressBar = $('#progress');
   if (progressBar) {
-    window.addEventListener('scroll', () => {
-      const doc = document.documentElement;
-      const scrollTop = doc.scrollTop;
-      const scrollHeight = doc.scrollHeight - doc.clientHeight;
-      const scrolled = (scrollTop / scrollHeight) * 100;
-      progressBar.style.width = `${scrolled}%`;
-    }, { passive: true });
+    let ticking = false;
+    const updateProgress = () => {
+      ticking = false;
+      const scrollTop = docEl.scrollTop || body.scrollTop;
+      const height    = docEl.scrollHeight - docEl.clientHeight;
+      const pct = height > 0 ? scrollTop / height : 0;
+      progressBar.style.width = (pct * 100).toFixed(2) + '%';
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateProgress);
+    };
+    updateProgress();
+    // passive melhora a rolagem em todos os devices
+    on(window, 'scroll', onScroll, { passive: true }); // MDN: addEventListener passive
+    on(window, 'resize', onScroll, { passive: true });
   }
 
-  // Revelar elementos com IntersectionObserver
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Cabeçalho dinâmico: altera aparência quando a página é rolada
-  const header = document.querySelector('header');
-  const toggleHeaderBg = () => {
-    if (window.scrollY > 80) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  };
-  if (header) {
-    toggleHeaderBg();
-    window.addEventListener('scroll', toggleHeaderBg, { passive: true });
-  }
-
-  // Atualiza o ano no rodapé
-  const yearSpan = document.getElementById('year');
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
-
-  // Manipulação de envio do formulário de contato (demonstração)
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const subject = document.getElementById('subject').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if (!name || !email || !subject || !message) {
-        alert('Por favor, preencha todos os campos.');
-        return;
-      }
-      // Exibe mensagem de sucesso (demonstração)
-      alert('Mensagem enviada! (Demonstração)');
-      contactForm.reset();
-    });
-  }
-
-// Removido: HTML do formulário e script duplicado. 
-// Certifique-se de que o formulário e os campos existam no HTML, não no JS.
-
-document.addEventListener('DOMContentLoaded', () => {
-  const header      = document.querySelector('header');
-  const burger      = document.getElementById('burger');
-  const mobileMenu  = document.getElementById('mobileMenu');
-  const progressBar = document.getElementById('progress');
-
-  // Abre/fecha o menu mobile
-  const openMenu  = () => {
-    mobileMenu.classList.add('open');
-    burger.setAttribute('aria-expanded', 'true');
-    document.documentElement.classList.add('no-scroll');
-  };
-  const closeMenu = () => {
-    mobileMenu.classList.remove('open');
-    burger.setAttribute('aria-expanded', 'false');
-    document.documentElement.classList.remove('no-scroll');
-  };
-
-  burger?.addEventListener('click', () => {
-    mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
-  });
-  // Fecha menu ao clicar em um link
-  mobileMenu?.querySelectorAll('.mobile-nav a').forEach(a => {
-    a.addEventListener('click', closeMenu);
-  });
-  // Fecha ao apertar ESC
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMenu();
-  });
-
-  // Aplica estilo ao cabeçalho ao rolar
-  const onScrollHeader = () => {
-    const y = window.scrollY || document.documentElement.scrollTop;
-    header?.classList.toggle('scrolled', y > 8);
-  };
-  onScrollHeader();
-  window.addEventListener('scroll', onScrollHeader, { passive: true });
-
-  // Barra de progresso de leitura
-  const onScrollProgress = () => {
-    const doc = document.documentElement;
-    const scrollTop = doc.scrollTop || document.body.scrollTop;
-    const height = doc.scrollHeight - doc.clientHeight;
-    const pct = height > 0 ? scrollTop / height : 0;
-    progressBar.style.width = (pct * 100).toFixed(2) + '%';
-  };
-  onScrollProgress();
-  window.addEventListener('scroll', onScrollProgress, { passive: true });
-
-  // Revela seções com animação conforme entram na viewport
-  const revealEls = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
+  // ===== REVEAL ELEMENTOS =====
+  const revealEls = $$('.reveal');
+  if ('IntersectionObserver' in window && revealEls.length) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(ent => {
         if (ent.isIntersecting) {
@@ -150,204 +84,175 @@ document.addEventListener('DOMContentLoaded', () => {
           io.unobserve(ent.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, {
+      // começa a revelar um pouco antes de entrar totalmente
+      root: null,
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.15
+    });
     revealEls.forEach(el => io.observe(el));
   } else {
     revealEls.forEach(el => el.classList.add('visible'));
   }
 
-  // Suaviza a rolagem para âncoras, compensando a altura do cabeçalho
-  const smoothTo = (hash) => {
-    const target = document.getElementById(hash.replace('#',''));
-    if (!target) return;
-    const headerHeight = header ? header.getBoundingClientRect().height : 0;
-    const top = target.getBoundingClientRect().top + window.pageYOffset - (headerHeight + 12);
-    window.scrollTo({ top, behavior: 'smooth' });
-  };
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      if (href.length > 1) {
-        e.preventDefault();
-        smoothTo(href);
-        history.pushState(null, '', href);
-      }
-    });
-  });
+  // ===== CABEÇALHO DINÂMICO =====
+  if (header) {
+    const setScrolled = () => header.classList.toggle('scrolled', window.scrollY > 8);
+    setScrolled();
+    on(window, 'scroll', setScrolled, { passive: true });
+  }
 
-  // Envia formulário de contato para WhatsApp
-  const cf = document.getElementById('contactForm');
-  cf?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const n    = document.getElementById('cf-name').value.trim();
-    const mail = document.getElementById('cf-email').value.trim();
-    const subj = document.getElementById('cf-subject').value.trim();
-    const msg  = document.getElementById('cf-message').value.trim();
-    if (!n || !mail || !subj || !msg) {
-      alert('Preencha todos os campos.');
-      return;
+  // ===== ANO NO RODAPÉ =====
+  const yearSpan = $('#year');
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+  // ===== ROLAGEM SUAVE PARA ÂNCORAS =====
+  // Dica: em CSS use também: html { scroll-behavior: smooth; } (suportado amplamente)
+  const getHeaderOffset = () => {
+    // tenta ler a var CSS --header-h; se falhar, usa altura real
+    const varH = getComputedStyle(docEl).getPropertyValue('--header-h').trim();
+    if (varH) {
+      // pode vir em px/clamp(); getComputedStyle resolve para px
+      const n = parseFloat(varH);
+      if (!Number.isNaN(n)) return n;
     }
-    const text  = `Nome: ${n}\nEmail: ${mail}\nAssunto: ${subj}\nMensagem: ${msg}`;
-    const query = new URLSearchParams({ text }).toString();
-    window.open(`https://wa.me/5511945835660?${query}`, '_blank', 'noopener,noreferrer');
+    return header ? header.getBoundingClientRect().height : 0;
+  };
+
+  const smoothTo = (hash) => {
+    const id = hash.replace('#', '');
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const top = target.getBoundingClientRect().top + window.pageYOffset - (getHeaderOffset() + 12);
+
+    if (!isReduced() && 'scrollBehavior' in document.documentElement.style) {
+      window.scrollTo({ top, behavior: 'smooth' });
+    } else {
+      window.scrollTo(0, top); // fallback sem animação
+    }
+
+    // acessibilidade: move foco ao destino
+    target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  };
+
+  // delegação: só para âncoras internas
+  on(document, 'click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (href && href.length > 1) {
+      e.preventDefault();
+      smoothTo(href);
+      history.pushState(null, '', href);
+    }
   });
-});
-document.addEventListener('DOMContentLoaded', () => {
-  const contactForm = document.getElementById('contactForm');
-  const successMessage = document.getElementById('success-message');
 
-  contactForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+  // ===== FORMULÁRIO DE CONTATO (WhatsApp) =====
+  const form = $('#contactForm');
+  const successMessage = $('#success-message');
 
-    // Limpa erros anteriores
-    clearErrors();
-    
-    // Valida o formulário
-    const isValid = validateForm();
+  if (form) {
+    const inputs = {
+      name:    $('#cf-name'),
+      email:   $('#cf-email'),
+      subject: $('#cf-subject'),
+      message: $('#cf-message'),
+    };
 
-    if (isValid) {
-      // Pega os dados do formulário
-      const name = document.getElementById('cf-name').value.trim();
-      const email = document.getElementById('cf-email').value.trim();
-      const subject = document.getElementById('cf-subject').value.trim();
-      const message = document.getElementById('cf-message').value.trim();
+    // Usa validação nativa quando possível
+    Object.values(inputs).forEach(inp => {
+      if (!inp) return;
+      on(inp, 'input', () => {
+        inp.setCustomValidity('');
+        const field = inp.closest('.field');
+        field?.classList.remove('has-error');
+        const err = field?.querySelector('.error-message');
+        if (err) err.textContent = '';
+      });
+    });
+
+    const showError = (inp, msg) => {
+      const field = inp.closest('.field');
+      field?.classList.add('has-error');
+      const err = field?.querySelector('.error-message');
+      if (err) err.textContent = msg;
+      inp.setCustomValidity(msg);
+      inp.reportValidity?.();
+    };
+
+    const validate = () => {
+      let ok = true;
+      if (!inputs.name.value.trim()) { showError(inputs.name, 'O campo nome é obrigatório.'); ok = false; }
+      const emailVal = inputs.email.value.trim();
+      if (!emailVal) { showError(inputs.email, 'O campo email é obrigatório.'); ok = false; }
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { showError(inputs.email, 'Por favor, insira um email válido.'); ok = false; }
+      if (!inputs.subject.value.trim()) { showError(inputs.subject, 'O campo assunto é obrigatório.'); ok = false; }
+      if (!inputs.message.value.trim()) { showError(inputs.message, 'O campo mensagem é obrigatório.'); ok = false; }
+      return ok;
+    };
+
+    on(form, 'submit', (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+
+      const btn = form.querySelector('button[type="submit"]');
+      const name = inputs.name.value.trim();
+      const email = inputs.email.value.trim();
+      const subject = inputs.subject.value.trim();
+      const message = inputs.message.value.trim();
 
       const text = `Olá! Meu nome é ${name} (${email}).\n\n*Assunto:*\n${subject}\n\n*Mensagem:*\n${message}`;
-      const query = new URLSearchParams({ text }).toString();
+
+      // Formato oficial wa.me/PHONE?text=... (PHONE em formato internacional, sem +/espaços)
       const phone = '5511945835660';
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 
-      // Desabilita o botão para evitar múltiplos envios
-      const submitButton = contactForm.querySelector('button[type="submit"]');
-      submitButton.disabled = true;
-      submitButton.textContent = 'Enviando...';
+      btn.disabled = true; btn.dataset.prev = btn.textContent; btn.textContent = 'Enviando...';
+      window.open(url, '_blank', 'noopener,noreferrer'); // docs oficiais WhatsApp
 
-      // Abre o WhatsApp
-      window.open(`https://wa.me/${phone}?${query}`, '_blank', 'noopener,noreferrer');
-
-      // Mostra a mensagem de sucesso e esconde o formulário
       setTimeout(() => {
-        contactForm.classList.add('hidden');
-        successMessage.classList.remove('hidden');
-      }, 500); // Um pequeno delay para o usuário ver a mudança no botão
-    }
-  });
-
-  function validateForm() {
-    let valid = true;
-    
-    // Valida nome
-    const nameInput = document.getElementById('cf-name');
-    if (nameInput.value.trim() === '') {
-      showError(nameInput, 'O campo nome é obrigatório.');
-      valid = false;
-    }
-    
-    // Valida email
-    const emailInput = document.getElementById('cf-email');
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailInput.value.trim() === '') {
-      showError(emailInput, 'O campo email é obrigatório.');
-      valid = false;
-    } else if (!emailRegex.test(emailInput.value.trim())) {
-      showError(emailInput, 'Por favor, insira um email válido.');
-      valid = false;
-    }
-
-    // Valida assunto
-    const subjectInput = document.getElementById('cf-subject');
-    if (subjectInput.value.trim() === '') {
-      showError(subjectInput, 'O campo assunto é obrigatório.');
-      valid = false;
-    }
-    
-    // Valida mensagem
-    const messageInput = document.getElementById('cf-message');
-    if (messageInput.value.trim() === '') {
-      showError(messageInput, 'O campo mensagem é obrigatório.');
-      valid = false;
-    }
-
-    return valid;
-  }
-  
-  function showError(inputElement, message) {
-    const field = inputElement.closest('.field');
-    const errorSpan = field.querySelector('.error-message');
-    errorSpan.textContent = message;
-    inputElement.style.borderColor = 'var(--error-color)'; // Destaca a borda
-  }
-
-  function clearErrors() {
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(span => span.textContent = '');
-    
-    const inputs = document.querySelectorAll('.input');
-    inputs.forEach(input => input.style.borderColor = 'var(--border-color)');
-  }
-// Adicione ou substitua esta lógica no seu script.js
-
-document.addEventListener('DOMContentLoaded', () => {
-
-  // 1. Seleciona TODOS os botões com a classe .burger
-  const burgerButtons = document.querySelectorAll('.burger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const body = document.body;
-
-  // Se não encontrar os elementos, não faz nada
-  if (burgerButtons.length === 0 || !mobileMenu) {
-    return;
-  }
-
-  // 2. Função para abrir/fechar o menu
-  const toggleMenu = () => {
-    // Pega o estado atual (true se está aberto, false se fechado)
-    const isExpanded = mobileMenu.getAttribute('aria-hidden') === 'false';
-
-    // Inverte o estado
-    mobileMenu.setAttribute('aria-hidden', isExpanded);
-    body.classList.toggle('menu-is-open'); // Classe no body para travar o scroll
-
-    // Atualiza o estado de TODOS os botões
-    burgerButtons.forEach(button => {
-      button.setAttribute('aria-expanded', !isExpanded);
-      button.classList.toggle('is-active'); // Classe para animar o "X"
+        form.classList.add('hidden');
+        successMessage?.classList.remove('hidden');
+      }, 400);
     });
-  };
+  }
 
-  // 3. Adiciona o evento de clique a CADA botão
-  burgerButtons.forEach(button => {
-    button.addEventListener('click', toggleMenu);
-  });
-  
-  // --- MELHORIA DE UX (BÔNUS) ---
-  // 4. Fecha o menu ao clicar em um link dele
-  const menuLinks = mobileMenu.querySelectorAll('a');
-  menuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      // Verifica se o menu está aberto antes de tentar fechar
-      if (mobileMenu.getAttribute('aria-hidden') === 'false') {
-        toggleMenu();
+  // ===== GALERIA DE VÍDEOS =====
+  const videoItems = $$('.video-item .galeria-video');
+
+  if (videoItems.length) {
+    const pointerFine = window.matchMedia('(pointer: fine)').matches;
+
+    // Pausa quando sai da viewport
+    let vio;
+    if ('IntersectionObserver' in window) {
+      vio = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (!isIntersecting && !target.paused) { target.pause(); target.currentTime = 0; }
+        });
+      }, { threshold: 0.1 });
+    }
+
+    videoItems.forEach((video) => {
+      video.playsInline = true; // iOS
+      video.muted = true;       // permite autoplay em hover
+
+      const wrapper = video.closest('.video-item');
+      if (pointerFine && wrapper) {
+        on(wrapper, 'mouseenter', () => { if (!isReduced()) { video.currentTime = 0; video.play().catch(()=>{}); }});
+        on(wrapper, 'mouseleave', () => { video.pause(); video.currentTime = 0; });
       }
-    });
-  });
+      // toque alterna play/pause em touch
+      on(video, 'click', () => { if (video.paused) video.play().catch(()=>{}); else video.pause(); });
 
-});
-});
-});
-// Removido: HTML do formulário e script duplicado.
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.video-item .galeria-video').forEach(video => {
-    // Desktop: hover
-    video.closest('.video-item').addEventListener('mouseenter', () => {
-      video.currentTime = 0;
-      video.play().catch(()=>{ /* ignorar bloqueios */ });
+      vio?.observe(video);
     });
-    video.closest('.video-item').addEventListener('mouseleave', () => {
-      video.pause(); video.currentTime = 0;
+
+    // Pausa tudo ao trocar de aba
+    on(document, 'visibilitychange', () => {
+      if (document.hidden) videoItems.forEach(v => { if (!v.paused) { v.pause(); } });
     });
-    // Mobile: toque alterna play/pause
-    video.addEventListener('click', () => {
-      if (video.paused) video.play(); else video.pause();
-    });
-  });
+  }
 });
