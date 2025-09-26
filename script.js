@@ -256,3 +256,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+(() => {
+  const wrap = document.getElementById('socialFab');
+  if (!wrap) return;
+
+  const phone = (wrap.dataset.phone || '').replace(/\D+/g, '') || '5511999999999';
+  const message = encodeURIComponent(wrap.dataset.msg || 'Olá! Vim pelo seu site 👋');
+  const igUser = (wrap.dataset.ig || 'instagram').replace(/^@/, '');
+
+  const waLink = `https://wa.me/${phone}?text=${message}`;
+  const igLink = `https://www.instagram.com/${igUser}/`;
+
+  const btnWhats = document.getElementById('btnWhats');
+  const btnInsta = document.getElementById('btnInsta');
+  const toggle  = document.getElementById('fabToggle');
+  const menu    = document.getElementById('fabMenu');
+
+  if (btnWhats) btnWhats.href = waLink;
+  if (btnInsta) btnInsta.href = igLink;
+
+  let open = false;
+  const setOpen = (v) => {
+    open = v;
+    menu.classList.toggle('open', v);
+    toggle.setAttribute('aria-expanded', v);
+  };
+
+  toggle.addEventListener('click', () => setOpen(!open));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) setOpen(false); });
+  document.addEventListener('click', (e) => { if (open && !wrap.contains(e.target)) setOpen(false); });
+
+  // Otimização de toque
+  ['touchstart','pointerdown'].forEach(evt => toggle.addEventListener(evt, () => {}, {passive:true}));
+  ['touchstart','pointerdown'].forEach(evt => toggle.addEventListener(evt, () => {}, {passive:true}));
+})();
+
+
