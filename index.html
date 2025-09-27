@@ -541,6 +541,8 @@
   mqMobile.addEventListener('change', applyMode);
 })();
 </script>
+
+
 <!-- foder-->
 
     <section id="contato" class="sec container">
@@ -566,7 +568,15 @@
       <label for="cf-message"></label>
       <textarea class="input" id="cf-message" name="message" placeholder="Conte-me sobre o seu projeto..." required></textarea>
     </div>
-    <button class="btn primary" type="submit">Enviar Mensagem</button>
+    <!-- Substitua seu botão por este bloco -->
+<button class="btn primary btn-send" type="submit">
+  <span class="btn-send-icon">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="currentColor"/>
+    </svg>
+  </span>
+  <span class="btn-send-text">Enviar Mensagem</span>
+</button>
   </form>
 </div>
 </section>

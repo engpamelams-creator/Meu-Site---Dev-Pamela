@@ -2571,3 +2571,156 @@ section.sec,
   align-items: center;
   justify-content: center;
 }
+
+/* ====== FAB Social ====== */
+.social-fab{
+  position: fixed;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 9999;
+  display: grid;
+  gap: 10px;
+  align-items: end;
+}
+
+/* Toggle (aparece só no mobile pelo seu JS) */
+.social-fab .fab.main{
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.18);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+.social-fab .fab.main svg{ display:block }
+
+/* Container dos botões (WhatsApp/Instagram) */
+.social-fab .floating-buttons{
+  display: flex;
+  gap: 10px;
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+/* Estado fechado (mobile) – o JS alterna a classe .open */
+.social-fab:not(.open) .floating-buttons{
+  transform: translateY(8px) scale(.98);
+  opacity: 0; pointer-events: none;
+}
+
+/* Botão redondo genérico */
+.floating-btn{
+  display: inline-grid;            /* elimina baseline */
+  place-items: center;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.22);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  color: #fff;                     /* define currentColor dos SVGs */
+  text-decoration: none;           /* remove underline do <a> */
+  line-height: 0;                  /* evita “rastro” de sublinhado */
+  outline: none;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.floating-btn svg{ display:block } /* evita espaço extra por baseline */
+
+.floating-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.45);
+}
+
+/* Marcas */
+.floating-btn.whatsapp{ color:#25D366; }
+.floating-btn.whatsapp:hover{ border-color: rgba(37,211,102,.5); }
+
+.floating-btn.instagram{
+  /* anel sutil com o tom do IG */
+  color:#E4405F;
+  border-color: rgba(228,64,95,.45);
+}
+.floating-btn.instagram:hover{
+  border-color: rgba(228,64,95,.75);
+}
+
+/* Acessibilidade: foco visível */
+.floating-btn:focus-visible, .social-fab .fab.main:focus-visible{
+  box-shadow: 0 0 0 3px rgba(255,255,255,.25), 0 0 0 6px rgba(255,107,53,.35);
+  transform: translateY(-1px);
+}
+/* FAB Social: botões em coluna (um em cima do outro) */
+.social-fab {
+  position: fixed;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.floating-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.fab.main {
+  margin-bottom: 0.5rem;
+}
+
+/* Opcional: ajuste para mobile */
+@media (max-width: 600px) {
+  .social-fab {
+    bottom: 1.2rem;
+    right: 1.2rem;
+  }
+}
+
+/* Adicione ao final do seu style.css */
+.btn-send {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  background: linear-gradient(90deg, #1a73e8 0%, #00c6fb 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.85em 2.2em;
+  box-shadow: 0 4px 24px 0 #1a73e833;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-send:hover, .btn-send:focus {
+  background: linear-gradient(90deg, #00c6fb 0%, #1a73e8 100%);
+  box-shadow: 0 6px 32px 0 #00c6fb44;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.btn-send-icon {
+  display: flex;
+  align-items: center;
+  animation: send-float 1.2s infinite alternate cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes send-float {
+  to { transform: translateY(-3px) scale(1.12);}
+}
+
+.btn-send svg {
+  fill: #fff;
+  filter: drop-shadow(0 0 4px #00c6fb88);
+  transition: fill 0.2s;
+}
